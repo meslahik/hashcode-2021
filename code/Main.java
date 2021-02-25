@@ -40,6 +40,7 @@ public class Main {
 	static ArrayList<Car> cars = new ArrayList<>();
 	static Map<Integer, ArrayList<Street>> intersections = new HashMap<> ();
 	static Map<String, Integer> popularStreet = new HashMap<>();
+	static Map<String, Street> mapForStreets = new HashMap<> ();
 
 	static String fileName = "./inputfiles/f.txt";
 	static String outputName = "/Users/ali/Desktop/f.txt";
@@ -59,6 +60,7 @@ public class Main {
 			String name = sLine[2];
 			int L = Integer.valueOf((sLine[3]));
 			Street sss = new Street(B, E, name, L);
+			mapForStreets.put(name, sss);
 			streets.add(sss);
 			if(!intersections.containsKey(E))
 				intersections.put(E, new ArrayList<>());
@@ -69,18 +71,28 @@ public class Main {
 			String[] cLine = reader.readLine().split(" ");
 			int P = Integer.valueOf((cLine[0]));
 			ArrayList<String> cStreets = new ArrayList<>();
+			int sumLen = 0;
 			for(int j = 0; j < P ; j++){
 				String stName = cLine[j + 1];
 				cStreets.add(stName);
 
+				sumLen += mapForStreets.get(stName).L;
+			}
+			cars.add(new Car(cStreets));
+
+			System.out.println("sumLen: " + sumLen);
+			if(sumLen > 1450)
+				continue;
+				
+			for(int j = 0; j < P ; j++){
+				String stName = cLine[j + 1];
 
 				if(!popularStreet.containsKey(stName)){
-					popularStreet.put(stName, 0);
+					popularStreet.put(stName, 1);
 				}else{
 					popularStreet.put(stName, popularStreet.get(stName) + 1);
 				}
 			}
-			cars.add(new Car(cStreets));
 		}
 		System.out.println("Input is read!");
 	}
@@ -145,8 +157,8 @@ public class Main {
 					int k = popularStreet.get(t.name);
 					double wTime = (k * 1.0 / sum);
 
-					int weight = new Random().nextInt(4) + 7;
-					int wTimeInt = (int)(wTime * weight) + 1;
+					// int weight = new Random().nextInt(3);
+					int wTimeInt = (int)(wTime * 7) + 1;
 					appendFile(t.name + " " + wTimeInt);
 				}
 				// else{
