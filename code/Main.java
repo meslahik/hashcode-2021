@@ -55,9 +55,9 @@ public class Main {
 			int L = Integer.valueOf((sLine[3]));
 			Street sss = new Street(B, E, name, L);
 			streets.add(sss);
-			if(!intersections.containsKey(B))
-				intersections.put(B, new ArrayList<>());
-			intersections.get(B).add(sss);
+			if(!intersections.containsKey(E))
+				intersections.put(E, new ArrayList<>());
+			intersections.get(E).add(sss);
 		}
 
 		for(int i = 0; i < V; i++){
@@ -69,14 +69,22 @@ public class Main {
 			}
 			cars.add(new Car(cStreets));
 		}
-		System.out.println("D: " + D);
+		System.out.println("Input is read!");
 	}
 	public static void main(String[] a) throws Exception{
-		System.out.println("Ali");
-
 		BufferedReader reader = new BufferedReader(new FileReader(fileName));
 		readFile(reader);
 		reader.close();
+
+		System.out.println(intersections.size());
+		Set<Integer> keys = intersections.keySet(); 
+		for(int key: keys){
+			System.out.println(key);
+			System.out.println(intersections.get(key).size());
+			for(Street t: intersections.get(key)){
+				System.out.println(t.name + " " + 1);
+			}
+		}
 	}
 
 }
