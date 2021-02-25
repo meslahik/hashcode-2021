@@ -1,4 +1,7 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 class Street {
@@ -38,6 +41,7 @@ public class Main {
 	static Map<Integer, ArrayList<Street>> intersections = new HashMap ();
 
 	static String fileName = "./inputfiles/a.txt";
+	static String outputName = "/Users/ali/Desktop/b.txt";
 
 	public static void readFile(BufferedReader reader) throws Exception{
 		String[] fLine = reader.readLine().split(" ");
@@ -71,18 +75,32 @@ public class Main {
 		}
 		System.out.println("Input is read!");
 	}
+
+	public static void appendFile(int txt){
+		appendFile(txt + "");
+	}	
+
+	public static void appendFile(String txt){
+		txt = txt + "\n";
+		try {
+			Files.write(Paths.get(outputName), txt.getBytes(), StandardOpenOption.APPEND);
+		}catch (IOException e) {
+			System.out.println(e.getMessage());
+			//exception handling left as an exercise for the reader
+		}
+	}
 	public static void main(String[] a) throws Exception{
 		BufferedReader reader = new BufferedReader(new FileReader(fileName));
 		readFile(reader);
 		reader.close();
 
-		System.out.println(intersections.size());
+		appendFile(intersections.size());
 		Set<Integer> keys = intersections.keySet(); 
 		for(int key: keys){
-			System.out.println(key);
-			System.out.println(intersections.get(key).size());
+			appendFile(key);
+			appendFile(intersections.get(key).size());
 			for(Street t: intersections.get(key)){
-				System.out.println(t.name + " " + 1);
+				appendFile(t.name + " " + 1);
 			}
 		}
 	}
