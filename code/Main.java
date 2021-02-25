@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
 class Street {
 	int B;
@@ -35,6 +35,7 @@ public class Main {
 	static int F;
 	static ArrayList<Street> streets = new ArrayList<>();
 	static ArrayList<Car> cars = new ArrayList<>();
+	static Map<Integer, ArrayList<Street>> intersections = new HashMap ();
 
 	static String fileName = "./inputfiles/a.txt";
 
@@ -52,7 +53,11 @@ public class Main {
 			int E = Integer.valueOf((sLine[1]));
 			String name = sLine[2];
 			int L = Integer.valueOf((sLine[3]));
-			streets.add(new Street(B, E, name, L));
+			Street sss = new Street(B, E, name, L);
+			streets.add(sss);
+			if(!intersections.containsKey(B))
+				intersections.put(B, new ArrayList<>());
+			intersections.get(B).add(sss);
 		}
 
 		for(int i = 0; i < V; i++){
@@ -71,6 +76,7 @@ public class Main {
 
 		BufferedReader reader = new BufferedReader(new FileReader(fileName));
 		readFile(reader);
+		reader.close();
 	}
 
 }
