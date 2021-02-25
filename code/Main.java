@@ -107,12 +107,31 @@ public class Main {
 		Set<Integer> keys = intersections.keySet(); 
 		for(int key: keys){
 			appendFile(key);
-			appendFile(intersections.get(key).size());
+
+			// appendFile(intersections.get(key).size());
+			
+			int sum = 0;
+			int cnt = 0;
 			for(Street t: intersections.get(key)){
-				if(popularStreet.containsKey(t.name))
-					appendFile(t.name + " " + (popularStreet.get(t.name) > 10 ? 10 : 2));
-				else
-					appendFile(t.name + " " + 1);
+				if(popularStreet.containsKey(t.name)){
+					sum += popularStreet.get(t.name);
+					cnt ++;
+				}
+			}
+			appendFile(cnt);
+
+			for(Street t: intersections.get(key)){
+
+				if(popularStreet.containsKey(t.name)){
+					int k = popularStreet.get(t.name);
+					double wTime = (k * 1.0 / sum);
+					int wTimeInt = (int)(wTime * 1) + 1;
+					appendFile(t.name + " " + wTimeInt);
+				}
+				// else{
+				// 	appendFile(t.name + " " + 1);
+				// }
+
 					
 			}
 		}
