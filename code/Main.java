@@ -38,10 +38,11 @@ public class Main {
 	static int F;
 	static ArrayList<Street> streets = new ArrayList<>();
 	static ArrayList<Car> cars = new ArrayList<>();
-	static Map<Integer, ArrayList<Street>> intersections = new HashMap ();
+	static Map<Integer, ArrayList<Street>> intersections = new HashMap<> ();
+	static Map<String, Integer> popularStreet = new HashMap<>();
 
-	static String fileName = "./inputfiles/a.txt";
-	static String outputName = "/Users/ali/Desktop/b.txt";
+	static String fileName = "./inputfiles/d.txt";
+	static String outputName = "/Users/ali/Desktop/d.txt";
 
 	public static void readFile(BufferedReader reader) throws Exception{
 		String[] fLine = reader.readLine().split(" ");
@@ -69,7 +70,15 @@ public class Main {
 			int P = Integer.valueOf((cLine[0]));
 			ArrayList<String> cStreets = new ArrayList<>();
 			for(int j = 0; j < P ; j++){
-				cStreets.add(cLine[j + 1]);
+				String stName = cLine[j + 1];
+				cStreets.add(stName);
+
+
+				if(!popularStreet.containsKey(stName)){
+					popularStreet.put(stName, 0);
+				}else{
+					popularStreet.put(stName, popularStreet.get(stName) + 1);
+				}
 			}
 			cars.add(new Car(cStreets));
 		}
@@ -100,7 +109,11 @@ public class Main {
 			appendFile(key);
 			appendFile(intersections.get(key).size());
 			for(Street t: intersections.get(key)){
-				appendFile(t.name + " " + 1);
+				if(popularStreet.containsKey(t.name))
+					appendFile(t.name + " " + (popularStreet.get(t.name) > 10 ? 10 : 2));
+				else
+					appendFile(t.name + " " + 1);
+					
 			}
 		}
 	}
