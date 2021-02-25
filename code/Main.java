@@ -41,8 +41,8 @@ public class Main {
 	static Map<Integer, ArrayList<Street>> intersections = new HashMap<> ();
 	static Map<String, Integer> popularStreet = new HashMap<>();
 
-	static String fileName = "./inputfiles/d.txt";
-	static String outputName = "/Users/ali/Desktop/d.txt";
+	static String fileName = "./inputfiles/f.txt";
+	static String outputName = "/Users/ali/Desktop/f.txt";
 
 	public static void readFile(BufferedReader reader) throws Exception{
 		String[] fLine = reader.readLine().split(" ");
@@ -103,19 +103,38 @@ public class Main {
 		readFile(reader);
 		reader.close();
 
-		appendFile(intersections.size());
 		Set<Integer> keys = intersections.keySet(); 
+		int mainCnt = 0;
+
 		for(int key: keys){
+			int cnt = 0;
+			for(Street t: intersections.get(key)){
+				if(popularStreet.containsKey(t.name)){
+					cnt ++;
+				}
+			}
+			if(cnt > 0) mainCnt++;
+		}
+
+		appendFile(mainCnt);
+
+		for(int key: keys){
+			int cnt = 0;
+			for(Street t: intersections.get(key)){
+				if(popularStreet.containsKey(t.name)){
+					cnt ++;
+				}
+			}
+			if(cnt == 0) continue;
+
 			appendFile(key);
 
 			// appendFile(intersections.get(key).size());
 			
 			int sum = 0;
-			int cnt = 0;
 			for(Street t: intersections.get(key)){
 				if(popularStreet.containsKey(t.name)){
 					sum += popularStreet.get(t.name);
-					cnt ++;
 				}
 			}
 			appendFile(cnt);
@@ -125,14 +144,14 @@ public class Main {
 				if(popularStreet.containsKey(t.name)){
 					int k = popularStreet.get(t.name);
 					double wTime = (k * 1.0 / sum);
-					int wTimeInt = (int)(wTime * 1) + 1;
+
+					int weight = new Random().nextInt(4) + 7;
+					int wTimeInt = (int)(wTime * weight) + 1;
 					appendFile(t.name + " " + wTimeInt);
 				}
 				// else{
 				// 	appendFile(t.name + " " + 1);
 				// }
-
-					
 			}
 		}
 	}
